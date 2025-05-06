@@ -1,24 +1,19 @@
 package com.ing.zoo.animals;
 
-public class Zebra {
-    public String name;
-    public String helloText;
-    public String eatText;
-    public String trick;
-
-    public Zebra()
-    {
+public class Zebra extends Animal implements Herbivore {
+    public Zebra(String name) {
+        this.name = name;
+        this.helloText = "zebra zebra";
     }
 
-    public void sayHello()
-    {
-        helloText = "zebra zebra";
-        System.out.println(helloText);
+    @Override
+    public void sayHello() {
+        super.sayHello();
     }
 
-    public void eatLeaves()
-    {
-        eatText = "munch munch zank yee bra";
-        System.out.println(eatText);
+    @Override
+    public String getEatText() {
+        return "munch munch zank yee bra";
     }
+
 }

@@ -1,40 +1,35 @@
 package com.ing.zoo;
 
 import com.ing.zoo.animals.*;
+import com.ing.zoo.commands.ZooCommandHandler;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
 public class Zoo {
-    public static void main(String[] args)
-    {
-        String[] commands = new String[4];
-        commands[0] = "hello";
-        commands[1] = "give leaves";
-        commands[2] = "give meat";
-        commands[3] = "perform trick";
-
-        Lion henk = new Lion();
-        henk.name = "henk";
-        Hippo elsa = new Hippo();
-        elsa.name = "elsa";
-        Pig dora = new Pig();
-        dora.name = "dora";
-        Tiger wally = new Tiger();
-        wally.name = "wally";
-        Zebra marty = new Zebra();
-        marty.name = "marty";
+    public static void main(String[] args) {
+        List<Animal> animals = Arrays.asList(
+                new Lion("henk"),
+                new Zebra("marty")
+        );
+//
+//        Hippo elsa = new Hippo();
+//        elsa.name = "elsa";
+//        Pig dora = new Pig();
+//        dora.name = "dora";
+//        Tiger wally = new Tiger();
+//        wally.name = "wally";
 
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Voer uw command in: ");
 
-        String input = scanner.nextLine();
-        if(input.equals(commands[0] + " henk"))
-        {
-            henk.sayHello();
-        }
-        else
-        {
-            System.out.println("Unknown command: " + input);
+        ZooCommandHandler handler = new ZooCommandHandler(animals);
+
+        while (true) {
+            System.out.print("Voer uw command in (exit om te stoppen): ");
+            String input = scanner.nextLine();
+            if (input.equalsIgnoreCase("exit")) break;
+            handler.handleCommand(input);
         }
     }
 }

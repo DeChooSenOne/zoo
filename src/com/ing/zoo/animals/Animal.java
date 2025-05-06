@@ -1,6 +1,23 @@
 package com.ing.zoo.animals;
 
 public abstract class Animal {
-    public abstract void sayHello(String intro);
-    public abstract void performTrick(String trick);
+    protected String name;
+    protected String helloText;
+    protected String trick;
+
+    public void sayHello(){
+        System.out.println(helloText);
+    }
+
+    public void performTrick(){
+        System.out.println(trick);
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getTrick() {
+        return trick;
+    }
 }

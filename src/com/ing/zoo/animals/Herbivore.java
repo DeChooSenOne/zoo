@@ -1,5 +1,9 @@
 package com.ing.zoo.animals;
 
 public interface Herbivore {
-    void eatLeaves(String eatNoise);
+    String getEatText();
+
+    default void eatLeaves() {
+        System.out.println(getEatText());
+    }
 }

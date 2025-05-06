@@ -1,23 +1,18 @@
 package com.ing.zoo.animals;
 
-public class Lion {
-    public String name;
-    public String helloText;
-    public String eatText;
-
-    public Lion()
-    {
+public class Lion extends Animal implements Carnivore {
+    public Lion(String name) {
+        this.name = name;
+        this.helloText = "roooooaaaaar";
     }
 
-    public void sayHello()
-    {
-        helloText = "roooaoaaaaar";
-        System.out.println(helloText);
+    @Override
+    public void sayHello() {
+        super.sayHello();
     }
 
-    public void eatMeat()
-    {
-        eatText = "nomnomnom thx mate";
-        System.out.println(eatText);
+    @Override
+    public String getEatText() {
+        return "nomnomnom thx mate";
     }
 }
