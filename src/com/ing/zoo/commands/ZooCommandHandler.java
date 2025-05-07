@@ -11,13 +11,16 @@ import java.util.Map;
 
 public class ZooCommandHandler {
     private final Map<String, Runnable> commandMap = new HashMap<>();
+    private final List<Animal> animals;
 
     public ZooCommandHandler(List<Animal> animals) {
+        this.animals = animals;
+
         List<Command> commands = Arrays.asList(
                 new BasicCommand("hello", a -> a::sayHello),
                 new CommandWithConditions(
                         "perform trick",
-                        a -> a.getTrick() != null && !a.getTrick().trim().isEmpty(),
+                        Animal::canPerformTrick,
                         a -> a::performTrick,
                         a -> a.getName() + " can't perform any trick."
                 ),
@@ -48,13 +51,66 @@ public class ZooCommandHandler {
             return;
         }
 
-        Runnable action = commandMap.get(input.toLowerCase().trim());
-        if (action != null) {
-            action.run();
+        String[] parts = input.trim().toLowerCase().split(" ");
+        String command = parts[0];
+        String subcommand = parts.length > 1 ? parts[1] : null;
+
+        if (subcommand == null) {
+            if ("hello".equals(command)) {
+                animals.forEach(a -> {
+                    System.out.print(a.getName() + " says ");
+                    a.sayHello();
+                });
+            } else {
+                System.out.println("Unknown command: " + input);
+            }
             System.out.println();
-        } else {
-            System.out.println("Unknown command: " + input);
-            System.out.println();
+            return;
         }
+
+        switch (command) {
+            case "give":
+                if ("meat".equals(subcommand)) {
+                    animals.stream()
+                            .filter(a -> a instanceof Carnivore)
+                            .forEach(a -> {
+                                System.out.print(a.getName() + " says ");
+                                ((Carnivore) a).eatMeat();
+                            });
+                } else if ("leaves".equals(subcommand)) {
+                    animals.stream()
+                            .filter(a -> a instanceof Herbivore)
+                            .forEach(a -> {
+                                System.out.print(a.getName() + " says ");
+                                ((Herbivore) a).eatLeaves();
+                            });
+                } else {
+                    System.out.println("Unknown give command: " + input);
+                }
+                break;
+
+            case "perform":
+                if ("trick".equals(subcommand)) {
+                    animals.stream()
+                            .filter(Animal::canPerformTrick)
+                            .forEach(a -> {
+                                System.out.print(a.getName() + " performs ");
+                                a.performTrick();
+                            });
+                } else {
+                    System.out.println("Unknown perform command: " + input);
+                }
+                break;
+
+            default:
+                Runnable action = commandMap.get(input.toLowerCase().trim());
+                if (action != null) {
+                    action.run();
+                } else {
+                    System.out.println("Unknown command: " + input);
+                }
+        }
+
+        System.out.println();
     }
 }
