@@ -4,10 +4,7 @@ import com.ing.zoo.animals.Animal;
 import com.ing.zoo.animals.Carnivore;
 import com.ing.zoo.animals.Herbivore;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ZooCommandHandler {
     private final Map<String, Runnable> commandMap = new HashMap<>();
@@ -15,9 +12,36 @@ public class ZooCommandHandler {
 
     public ZooCommandHandler(List<Animal> animals) {
         this.animals = animals;
+        registerCommands();
+    }
 
+    public void handleCommand(String input) {
+        if (input == null || input.trim().isEmpty()) {
+            System.out.println("Can't process empty command.\n");
+            return;
+        }
+
+        String[] parts = input.trim().toLowerCase().split(" ");
+        String command = parts[0];
+        String subcommand = parts.length > 1 ? parts[1] : null;
+
+        Runnable action = commandMap.get(input.toLowerCase().trim());
+        if (action != null) {
+            action.run();
+            System.out.println();
+            return;
+        }
+
+        if (handleGroupCommand(command, subcommand)) return;
+
+        System.out.println("Unknown command: " + input);
+        System.out.println();
+    }
+
+    private void registerCommands() {
         List<Command> commands = Arrays.asList(
                 new BasicCommand("hello", a -> a::sayHello),
+                new BasicCommand("help", a -> this::printAvailableCommands),
                 new CommandWithConditions(
                         "perform trick",
                         Animal::canPerformTrick,
@@ -45,29 +69,7 @@ public class ZooCommandHandler {
         }
     }
 
-    public void handleCommand(String input) {
-        if (input == null || input.trim().isEmpty()) {
-            System.out.println("Can't process empty command.\n");
-            return;
-        }
-
-        String[] parts = input.trim().toLowerCase().split(" ");
-        String command = parts[0];
-        String subcommand = parts.length > 1 ? parts[1] : null;
-
-        if (subcommand == null) {
-            if ("hello".equals(command)) {
-                animals.forEach(a -> {
-                    System.out.print(a.getName() + " says ");
-                    a.sayHello();
-                });
-            } else {
-                System.out.println("Unknown command: " + input);
-            }
-            System.out.println();
-            return;
-        }
-
+    private boolean handleGroupCommand(String command, String subcommand) {
         switch (command) {
             case "give":
                 if ("meat".equals(subcommand)) {
@@ -77,6 +79,8 @@ public class ZooCommandHandler {
                                 System.out.print(a.getName() + " says ");
                                 ((Carnivore) a).eatMeat();
                             });
+                    System.out.println();
+                    return true;
                 } else if ("leaves".equals(subcommand)) {
                     animals.stream()
                             .filter(a -> a instanceof Herbivore)
@@ -84,10 +88,13 @@ public class ZooCommandHandler {
                                 System.out.print(a.getName() + " says ");
                                 ((Herbivore) a).eatLeaves();
                             });
+                    System.out.println();
+                    return true;
                 } else {
-                    System.out.println("Unknown give command: " + input);
+                    System.out.println("Unknown give command: give " + subcommand);
+                    System.out.println();
+                    return true;
                 }
-                break;
 
             case "perform":
                 if ("trick".equals(subcommand)) {
@@ -97,19 +104,17 @@ public class ZooCommandHandler {
                                 System.out.print(a.getName() + " performs ");
                                 a.performTrick();
                             });
+                    System.out.println();
                 } else {
-                    System.out.println("Unknown perform command: " + input);
+                    System.out.println("Unknown perform command: perform " + subcommand);
+                    System.out.println();
                 }
-                break;
+                return true;
 
             default:
-                Runnable action = commandMap.get(input.toLowerCase().trim());
-                if (action != null) {
-                    action.run();
-                } else {
-                    System.out.println("Unknown command: " + input);
-                }
+                return false;
         }
+    }
 
         System.out.println();
     }
