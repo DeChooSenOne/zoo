@@ -14,7 +14,9 @@ public class Zoo {
                 new Zebra("marty"),
                 new Hippo("elsa"),
                 new Tiger("wally"),
-                new Pig("dora")
+                new Pig("dora"),
+                new Tapir("snoop"),
+                new Raccoon("rocky")
         );
 
         Scanner scanner = new Scanner(System.in);
