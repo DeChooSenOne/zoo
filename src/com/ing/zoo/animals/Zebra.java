@@ -12,7 +12,7 @@ public class Zebra extends Animal implements Herbivore {
     }
 
     @Override
-    public String getEatText() {
+    public String getEatLeavesText() {
         return "munch munch zank yee bra";
     }
 

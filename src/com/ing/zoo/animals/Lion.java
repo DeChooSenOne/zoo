@@ -12,7 +12,7 @@ public class Lion extends Animal implements Carnivore {
     }
 
     @Override
-    public String getEatText() {
+    public String getEatMeatText() {
         return "nomnomnom thx mate";
     }
 }

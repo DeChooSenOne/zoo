@@ -11,15 +11,11 @@ public class Zoo {
     public static void main(String[] args) {
         List<Animal> animals = Arrays.asList(
                 new Lion("henk"),
-                new Zebra("marty")
+                new Zebra("marty"),
+                new Hippo("elsa"),
+                new Tiger("wally"),
+                new Pig("dora")
         );
-//
-//        Hippo elsa = new Hippo();
-//        elsa.name = "elsa";
-//        Pig dora = new Pig();
-//        dora.name = "dora";
-//        Tiger wally = new Tiger();
-//        wally.name = "wally";
 
         Scanner scanner = new Scanner(System.in);
 

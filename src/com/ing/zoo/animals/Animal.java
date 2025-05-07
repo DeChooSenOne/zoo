@@ -17,7 +17,7 @@ public abstract class Animal {
         return name;
     }
 
-    public String getTrick() {
-        return trick;
+    public boolean canPerformTrick() {
+        return trick != null && !trick.trim().isEmpty();
     }
 }

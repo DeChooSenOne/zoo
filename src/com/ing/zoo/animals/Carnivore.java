@@ -1,9 +1,9 @@
 package com.ing.zoo.animals;
 
 public interface Carnivore {
-    String getEatText();
+    String getEatMeatText();
 
     default void eatMeat(){
-        System.out.println(getEatText());
+        System.out.println(getEatMeatText());
     }
 }

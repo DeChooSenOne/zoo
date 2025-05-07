@@ -1,23 +1,19 @@
 package com.ing.zoo.animals;
 
-public class Hippo {
-    public String name;
-    public String helloText;
-    public String eatText;
-
-    public Hippo()
-    {
+public class Hippo extends Animal implements Herbivore {
+    public Hippo(String name) {
+        this.name = name;
+        this.helloText = "splash";
     }
 
-    public void sayHello()
-    {
-        helloText = "splash";
-        System.out.println(helloText);
+    @Override
+    public void sayHello() {
+        super.sayHello();
     }
 
-    public void eatLeaves()
-    {
-        eatText = "munch munch lovely";
-        System.out.println(eatText);
+    @Override
+    public String getEatLeavesText() {
+        return "munch munch lovely";
     }
+
 }
