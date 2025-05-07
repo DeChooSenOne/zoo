@@ -24,7 +24,7 @@ public class Zoo {
         ZooCommandHandler handler = new ZooCommandHandler(animals);
 
         while (true) {
-            System.out.print("Voer uw command in (exit om te stoppen): ");
+            System.out.print("Voer uw command in (help voor hulp): ");
             String input = scanner.nextLine();
             if (input.equalsIgnoreCase("exit")) break;
             handler.handleCommand(input);

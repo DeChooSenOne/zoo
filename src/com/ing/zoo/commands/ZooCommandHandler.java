@@ -32,6 +32,8 @@ public class ZooCommandHandler {
             return;
         }
 
+        if (subcommand == null && handleGlobalCommand(command)) return;
+
         if (handleGroupCommand(command, subcommand)) return;
 
         System.out.println("Unknown command: " + input);
@@ -116,6 +118,51 @@ public class ZooCommandHandler {
         }
     }
 
+    private boolean handleGlobalCommand(String command) {
+        switch (command) {
+            case "hello":
+                animals.forEach(a -> {
+                    System.out.print(a.getName() + " says ");
+                    a.sayHello();
+                });
+                System.out.println();
+                return true;
+            case "help":
+                printAvailableCommands();
+                return true;
+            case "exit":
+                System.exit(0);
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    private void printAvailableCommands() {
+        System.out.println("Available commands:");
+
+        List<String> globalCommands = Arrays.asList(
+                "help", "exit", "hello", "give meat", "give leaves", "perform trick"
+        );
+
+        System.out.println("\nGlobal commands:");
+        globalCommands.forEach(System.out::println);
+
+        System.out.println("\nPer-animal commands:");
+        commandMap.keySet().stream()
+                .map(this::perAnimalFormat)
+                .filter(Objects::nonNull)
+                .distinct()
+                .sorted()
+                .forEach(System.out::println);
+
         System.out.println();
+    }
+
+    private String perAnimalFormat(String fullCommand) {
+        int lastSpace = fullCommand.lastIndexOf(' ');
+        return (lastSpace != -1)
+                ? fullCommand.substring(0, lastSpace) + " [animal's name]"
+                : null;
     }
 }
